@@ -1,0 +1,205 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec2 square_pixels = vec2(32);
+
+void fragment(){
+	vec2 rect_size = 1.0/SCREEN_PIXEL_SIZE;
+	vec2 square_size = 0.5*rect_size/square_pixels;
+	COLOR = 0.35*(abs(vec4(step(fract(SCREEN_UV.x*square_size.x),0.5))-
+	vec4(step(fract(SCREEN_UV.y*square_size.y),0.5))));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/square_pixels = Vector2( 32, 32 )
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+input_pass_on_modal_close_click = false
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+gui_disable_input = true
+
+[node name="Scaled" type="Sprite" parent="ViewportContainer/Viewport"]
+
+[node name="Camera2D" type="Camera2D" parent="ViewportContainer/Viewport"]
+current = true
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -210.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 10.0
+grow_horizontal = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -90.0
+margin_top = -53.5
+margin_right = 90.0
+margin_bottom = 53.5
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OpenButton" type="Button" parent="Panel/VBoxContainer"]
+margin_right = 180.0
+margin_bottom = 25.0
+text = "Load Image"
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+margin_top = 29.0
+margin_right = 180.0
+margin_bottom = 33.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+margin_top = 37.0
+margin_right = 180.0
+margin_bottom = 70.0
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 102.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+text = "Factor:"
+
+[node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_left = 106.0
+margin_right = 180.0
+margin_bottom = 33.0
+min_value = 1.0
+max_value = 9.0
+value = 1.0
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer"]
+margin_top = 74.0
+margin_right = 180.0
+margin_bottom = 78.0
+
+[node name="SaveButton" type="Button" parent="Panel/VBoxContainer"]
+margin_top = 82.0
+margin_right = 180.0
+margin_bottom = 107.0
+text = "Save"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -332.0
+margin_top = -184.0
+margin_right = 332.0
+margin_bottom = 184.0
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
+current_dir = "/home/azagaya/GameDev/ScaleNX"
+current_file = "icon.png"
+current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveDialog" type="FileDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -332.0
+margin_top = -184.0
+margin_right = 332.0
+margin_bottom = 184.0
+access = 2
+filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
+current_dir = "/home/azagaya/GameDev/ScaleNX"
+current_file = "icon.png"
+current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.352941 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PopupDialog" type="PopupDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -56.0
+margin_top = -20.0
+margin_right = 72.0
+margin_bottom = 28.0
+
+[node name="Label" type="Label" parent="PopupDialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -47.5
+margin_top = -11.5
+margin_right = 47.5
+margin_bottom = 11.5
+text = "Calculating..."
+
+[connection signal="pressed" from="Panel/VBoxContainer/OpenButton" to="." method="_on_OpenButton_pressed"]
+[connection signal="value_changed" from="Panel/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_SpinBox_value_changed"]
+[connection signal="pressed" from="Panel/VBoxContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="file_selected" from="SaveDialog" to="." method="_on_SaveDialog_file_selected"]
