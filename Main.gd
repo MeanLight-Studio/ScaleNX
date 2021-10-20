@@ -34,10 +34,14 @@ func _unhandled_input(event):
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			zoom = clamp(zoom * 1.1, 0.01, 50)
 			camera.zoom = zoom * Vector2.ONE
-		print(camera.zoom)
 
 func _ready():
 	$ColorRect.hide()
+	get_tree().connect("files_dropped", self, "_on_files_dropped")
+
+
+func _on_files_dropped(files, screen):
+	_on_FileDialog_file_selected(files[0])
 
 
 func _process(_delta):
@@ -90,7 +94,9 @@ func _on_OpenButton_pressed():
 
 func _on_FileDialog_file_selected(path):
 	spin_box.value = 1
-	var _error := image.load(path)
+	var error := image.load(path)
+	if error:
+		return
 	file_dialog.hide()
 	$PopupDialog.popup()
 	$ColorRect.show()

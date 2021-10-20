@@ -20,7 +20,7 @@ void fragment(){
 shader = SubResource( 1 )
 shader_param/square_pixels = Vector2( 32, 32 )
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 3 )
 
 [node name="Main" type="Control"]
@@ -193,7 +193,7 @@ render_target_update_mode = 0
 gui_disable_input = true
 
 [node name="Sprite" type="Sprite" parent="Scale27X"]
-material = SubResource( 4 )
+material = SubResource( 3 )
 scale = Vector2( 3, 3 )
 
 [node name="Scale9X" type="Viewport" parent="."]
@@ -207,7 +207,7 @@ render_target_update_mode = 0
 gui_disable_input = true
 
 [node name="Sprite" type="Sprite" parent="Scale9X"]
-material = SubResource( 4 )
+material = SubResource( 3 )
 scale = Vector2( 3, 3 )
 
 [node name="Scale3X" type="Viewport" parent="."]
@@ -221,7 +221,7 @@ render_target_update_mode = 0
 gui_disable_input = true
 
 [node name="Sprite" type="Sprite" parent="Scale3X"]
-material = SubResource( 4 )
+material = SubResource( 3 )
 scale = Vector2( 3, 3 )
 
 [node name="PopupDialog" type="PopupDialog" parent="."]
