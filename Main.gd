@@ -39,6 +39,7 @@ func _unhandled_input(event):
 func _ready():
 	$ColorRect.hide()
 
+
 func _process(_delta):
 	panel.rect_size = panel.get_child(0).rect_size + Vector2(20,20)
 	if moving_camera:
@@ -68,7 +69,17 @@ func _on_OpenButton_pressed():
 		viewport9X.get_node("Sprite").position = viewport9X.size/2
 		viewport27X.get_node("Sprite").position = viewport27X.size/2
 		
-		viewport3X.get_node("Sprite").texture = texture
+		viewport3X.get_node("Sprite").texture = texture.duplicate()
+		yield(get_tree(), "idle_frame")
+		image3X = viewport3X.get_texture().get_data()
+		
+		
+		var texture9x := ImageTexture.new()
+		texture9x.create_from_image(image3X, 0)
+		viewport9X.get_node("Sprite").texture = texture9x.duplicate()
+		yield(get_tree(), "idle_frame")
+		image9X = viewport9X.get_texture().get_data()
+
 		
 		scaled_sprite.texture = texture
 		$ColorRect.hide()
@@ -98,6 +109,19 @@ func _on_FileDialog_file_selected(path):
 	viewport27X.get_node("Sprite").position = viewport27X.size/2
 	
 	viewport3X.get_node("Sprite").texture = texture.duplicate()
+	viewport3X.render_target_update_mode = Viewport.UPDATE_ONCE
+	yield(VisualServer,"frame_post_draw")
+	image3X = viewport3X.get_texture().get_data().duplicate()
+	
+	
+	var texture9x := ImageTexture.new()
+	texture9x.create_from_image(image3X, 0)
+	viewport9X.get_node("Sprite").texture = texture9x.duplicate()
+	viewport9X.render_target_update_mode = Viewport.UPDATE_ONCE
+	yield(VisualServer,"frame_post_draw")
+	yield(get_tree(), "idle_frame")
+	image9X = viewport9X.get_texture().get_data().duplicate()
+
 	
 	scaled_sprite.texture = texture
 	$ColorRect.hide()
@@ -106,9 +130,6 @@ func _on_FileDialog_file_selected(path):
 
 
 func _on_SpinBox_value_changed(value):
-	
-	viewport9X.get_node("Sprite").texture = viewport3X.get_texture()
-	viewport27X.get_node("Sprite").texture = viewport9X.get_texture()
 	
 	if not scaled_sprite.texture:
 		return
@@ -123,14 +144,14 @@ func _on_SpinBox_value_changed(value):
 		0:
 			result = image.duplicate()
 		1:
-			result = viewport3X.get_texture().get_data()
+			result = image3X.duplicate()
 		2:
-			result = viewport9X.get_texture().get_data()
+			result = image9X.duplicate()
 
 	result.resize(value * image.get_width(), value * image.get_height(), Image.INTERPOLATE_NEAREST)
 
 	texture.create_from_image(result,0)
-	scaled_sprite.texture = texture
+	scaled_sprite.texture = texture.duplicate()
 	
 	spin_box.editable = true
 
