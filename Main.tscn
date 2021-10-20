@@ -142,13 +142,13 @@ margin_left = -332.0
 margin_top = -184.0
 margin_right = 332.0
 margin_bottom = 184.0
-window_title = "Abrir un Archivo"
+window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/pablo/Documentos/ScaleNX"
+current_dir = "/home/azagaya/GameDev/ScaleNX"
 current_file = "icon.png"
-current_path = "/home/pablo/Documentos/ScaleNX/icon.png"
+current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -165,9 +165,9 @@ margin_bottom = 184.0
 window_title = "Guardar un Archivo"
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/pablo/Documentos/ScaleNX"
+current_dir = "/home/azagaya/GameDev/ScaleNX"
 current_file = "icon.png"
-current_path = "/home/pablo/Documentos/ScaleNX/icon.png"
+current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
 __meta__ = {
 "_edit_use_anchors_": false
 }
