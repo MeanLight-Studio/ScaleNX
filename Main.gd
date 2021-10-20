@@ -29,12 +29,12 @@ func _unhandled_input(event):
 		if event.button_index == BUTTON_LEFT:
 			moving_camera = event.pressed
 		elif event.button_index == BUTTON_WHEEL_UP:
-			zoom = clamp(zoom * 0.9, 0.1, 5)
+			zoom = clamp(zoom * 0.9, 0.01, 50)
 			camera.zoom = zoom * Vector2.ONE
 		elif event.button_index == BUTTON_WHEEL_DOWN:
-			zoom = clamp(zoom * 1.1, 0.1, 5)
+			zoom = clamp(zoom * 1.1, 0.01, 50)
 			camera.zoom = zoom * Vector2.ONE
-		
+		print(camera.zoom)
 
 func _ready():
 	$ColorRect.hide()
@@ -148,7 +148,7 @@ func _on_SpinBox_value_changed(value):
 		2:
 			result = image9X.duplicate()
 
-	result.resize(value * image.get_width(), value * image.get_height(), Image.INTERPOLATE_NEAREST)
+	#result.resize(value * image.get_width(), value * image.get_height(), Image.INTERPOLATE_NEAREST)
 
 	texture.create_from_image(result,0)
 	scaled_sprite.texture = texture.duplicate()
