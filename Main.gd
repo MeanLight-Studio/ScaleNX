@@ -20,6 +20,10 @@ onready var thread := Thread.new()
 onready var mutex := Mutex.new()
 onready var camera := $ViewportContainer/Viewport/Camera2D
 
+onready var viewport3X := $Scale3X
+onready var viewport9X := $Scale9X
+onready var viewport27X := $Scale27X
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
@@ -41,6 +45,7 @@ func _process(_delta):
 		camera.position -= (get_global_mouse_position() - last_mouse_position)*zoom
 
 	last_mouse_position = get_global_mouse_position()
+	
 func _on_OpenButton_pressed():
 	if OS.get_name() == "HTML5":
 		$PopupDialog.popup()
@@ -52,9 +57,19 @@ func _on_OpenButton_pressed():
 		yield(get_tree(), "idle_frame")
 		yield(get_tree(), "idle_frame")
 		yield(get_tree(), "idle_frame")
-		scale3X(image3X, image)
-		scale3X(image9X, image3X)
+		
 		texture.create_from_image(image,0)
+		
+		viewport3X.size = texture.get_size()*3;
+		viewport9X.size = texture.get_size()*9;
+		viewport27X.size = texture.get_size()*27;
+		
+		viewport3X.get_node("Sprite").position = viewport3X.size/2
+		viewport9X.get_node("Sprite").position = viewport9X.size/2
+		viewport27X.get_node("Sprite").position = viewport27X.size/2
+		
+		viewport3X.get_node("Sprite").texture = texture
+		
 		scaled_sprite.texture = texture
 		$ColorRect.hide()
 		$PopupDialog.hide()
@@ -71,72 +86,29 @@ func _on_FileDialog_file_selected(path):
 	yield(get_tree(), "idle_frame")
 	yield(get_tree(), "idle_frame")
 	yield(get_tree(), "idle_frame")
-	scale3X(image3X, image)
-	scale3X(image9X, image3X)
+	
 	texture.create_from_image(image,0)
+	
+	viewport3X.size = texture.get_size()*3;
+	viewport9X.size = texture.get_size()*9;
+	viewport27X.size = texture.get_size()*27;
+	
+	viewport3X.get_node("Sprite").position = viewport3X.size/2
+	viewport9X.get_node("Sprite").position = viewport9X.size/2
+	viewport27X.get_node("Sprite").position = viewport27X.size/2
+	
+	viewport3X.get_node("Sprite").texture = texture.duplicate()
+	
 	scaled_sprite.texture = texture
 	$ColorRect.hide()
 	$PopupDialog.hide()
 	
 
-func scale3X(scaled : Image, image : Image):
-	scaled.create(image.get_width()*3, image.get_height()*3, false, Image.FORMAT_RGBA8)
-	scaled.lock()
-	image.lock()
-	var a : Color
-	var b : Color
-	var c : Color
-	var d : Color
-	var e : Color
-	var f : Color
-	var g : Color
-	var h : Color
-	var i : Color
-
-	for x in range(1,image.get_width()-1):
-		for y in range(1,image.get_height()-1):
-			var xs : float = 3*x
-			var ys : float = 3*y
-
-			a = image.get_pixel(x-1,y-1)
-			b = image.get_pixel(x,y-1)
-			c = image.get_pixel(x+1,y-1)
-			d = image.get_pixel(x-1,y)
-			e = image.get_pixel(x,y)
-			f = image.get_pixel(x+1,y)
-			g = image.get_pixel(x-1,y+1)
-			h = image.get_pixel(x,y+1)
-			i = image.get_pixel(x+1,y+1)
-
-			var db : bool = d == b
-			var dh : bool = d == h
-			var bf : bool = f == b
-			var ec : bool = e == c
-			var ea : bool = e == a
-			var fh : bool = f == h
-			var eg : bool = e == g
-			var ei : bool = e == i
-
-			scaled.set_pixel(xs-1, ys-1, d if (db and !dh and !bf) else e )
-			scaled.set_pixel(xs, ys-1, b if (db and !dh and !bf and !ec) or
-			(bf and !db and !fh and !ea) else e)
-			scaled.set_pixel(xs+1, ys-1, f if (bf and !db and !fh) else e)
-			scaled.set_pixel(xs-1, ys, d if (dh and !fh and !db and !ea) or
-			 (db and !dh and !bf and !eg) else e)
-			scaled.set_pixel(xs, ys, e);
-			scaled.set_pixel(xs+1, ys, f if (bf and !db and !fh and !ei) or
-			(fh and !bf and !dh and !ec) else e)
-			scaled.set_pixel(xs-1, ys+1, d if (dh and !fh and !db) else e)
-			scaled.set_pixel(xs, ys+1, h if (fh and !bf and !dh and !eg) or
-			(dh and !fh and !db and !ei) else e)
-			scaled.set_pixel(xs+1, ys+1, f if (fh and !bf and !dh) else e)
-
-	scaled.unlock()
-	image.unlock()
-	return scaled
-
 
 func _on_SpinBox_value_changed(value):
+	
+	viewport9X.get_node("Sprite").texture = viewport3X.get_texture()
+	viewport27X.get_node("Sprite").texture = viewport9X.get_texture()
 	
 	if not scaled_sprite.texture:
 		return
@@ -151,9 +123,9 @@ func _on_SpinBox_value_changed(value):
 		0:
 			result = image.duplicate()
 		1:
-			result = image3X.duplicate()
+			result = viewport3X.get_texture().get_data()
 		2:
-			result = image9X.duplicate()
+			result = viewport9X.get_texture().get_data()
 
 	result.resize(value * image.get_width(), value * image.get_height(), Image.INTERPOLATE_NEAREST)
 
