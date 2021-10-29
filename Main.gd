@@ -212,11 +212,12 @@ func _on_file_menu_id_pressed(id):
 func _on_view_menu_id_pressed(id):
 	match id:
 		0:
-			pass
+			zoom = 1
+			camera.zoom = Vector2.ONE
 		1:
 			pass
 		2:
-			camera.position = Vector2.ZERO
+			sprites_container.position = Vector2.ZERO
 		4:
 			view_menu.toggle_item_checked(view_menu.get_item_index(id))
 			view_menu.toggle_item_checked(view_menu.get_item_index(5))

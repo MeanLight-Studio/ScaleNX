@@ -265,7 +265,7 @@ margin_bottom = 25.0
 focus_mode = 2
 group = SubResource( 5 )
 text = "View"
-items = [ "Center", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Reset Pan", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
+items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Reset Pan", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
 switch_on_hover = true
 
 [node name="AboutMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
