@@ -215,7 +215,23 @@ func _on_view_menu_id_pressed(id):
 			zoom = 1
 			camera.zoom = Vector2.ONE
 		1:
-			pass
+			if sprites_container.get_child_count() == 0:
+				return
+			var rect := Rect2(0,0,0,0)
+			for sprite in sprites_container.get_children():
+				var s : Vector2 = sprite.texture.get_size()
+				var r := Rect2((sprite.global_position - s/2), s)
+				if rect.size == Vector2.ZERO:
+					rect = r
+				else:
+					rect = rect.merge(r)
+			if rect.size != Vector2.ZERO:
+				
+				sprites_container.position -= rect.position + rect.size / 2
+				var ratio = rect.size / get_viewport().size
+				zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
+				camera.zoom = zoom * Vector2.ONE
+				
 		2:
 			sprites_container.position = Vector2.ZERO
 		4:
