@@ -25,7 +25,7 @@ onready var viewport27X := $Scale27X
 
 onready var file_menu : PopupMenu = $ToolBar/VBoxContainer/FileMenu.get_popup()
 onready var view_menu : PopupMenu = $ToolBar/VBoxContainer/ViewMenu.get_popup()
-onready var about_menu : PopupMenu = $ToolBar/VBoxContainer/AboutMenu.get_popup()
+onready var help_menu : PopupMenu = $ToolBar/VBoxContainer/HelpMenu.get_popup()
 
 onready var checkboard := $CheckBoard
 
@@ -60,7 +60,7 @@ func _ready():
 	get_tree().connect("files_dropped", self, "_on_files_dropped")
 	file_menu.connect("id_pressed", self, "_on_file_menu_id_pressed")
 	view_menu.connect("id_pressed", self, "_on_view_menu_id_pressed")
-	about_menu.connect("id_pressed", self, "_on_about_menu_id_pressed")
+	help_menu.connect("id_pressed", self, "_on_help_menu_id_pressed")
 	
 	if OS.get_name() == "HTML5":
 		file_menu.remove_item(2)
@@ -244,8 +244,12 @@ func _on_view_menu_id_pressed(id):
 			view_menu.toggle_item_checked(view_menu.get_item_index(4))
 			checkboard.material.set_shader_param("brightness", 0)
 	
-func _on_about_menu_id_pressed(id):
-	print(id)
+func _on_help_menu_id_pressed(id):
+	match id:
+		0:
+			pass
+		1:
+			$AboutDialog.popup_centered()
 
 func adjust_reference_rect(sprite : Sprite):
 	sprite.get_node("ReferenceRect").rect_size = texture.get_size()
@@ -258,3 +262,4 @@ func set_selected_sprite(sprite : Sprite):
 	if sprite != null:
 		sprite.get_node("ReferenceRect").visible = true
 	selected_sprite = sprite
+
