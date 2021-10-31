@@ -1,8 +1,7 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
-[ext_resource path="res://scale3X.shader" type="Shader" id=3]
 [ext_resource path="res://Images/spriteshift.png" type="Texture" id=4]
 [ext_resource path="res://Images/twitter.png" type="Texture" id=5]
 [ext_resource path="res://Images/itchio.png" type="Texture" id=6]
@@ -29,7 +28,9 @@ shader = SubResource( 1 )
 shader_param/square_pixels = Vector2( 32, 32 )
 shader_param/brightness = 0.0
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="ButtonGroup" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
@@ -40,11 +41,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
-
-[sub_resource type="ShaderMaterial" id=4]
-shader = ExtResource( 3 )
-
-[sub_resource type="ButtonGroup" id=5]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -80,55 +76,11 @@ size = Vector2( 1024, 600 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
-gui_disable_input = true
 
 [node name="Camera2D" type="Camera2D" parent="ViewportContainer/Viewport"]
 current = true
 
 [node name="Sprites" type="Node2D" parent="ViewportContainer/Viewport"]
-
-[node name="Panel" type="PanelContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -208.0
-margin_top = 120.0
-margin_right = -8.0
-margin_bottom = 120.0
-grow_horizontal = 0
-custom_styles/panel = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 195.0
-margin_bottom = 38.0
-grow_horizontal = 2
-grow_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
-margin_right = 190.0
-margin_bottom = 33.0
-
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_top = 5.0
-margin_right = 112.0
-margin_bottom = 28.0
-size_flags_horizontal = 3
-text = "Scale:"
-
-[node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_left = 116.0
-margin_right = 190.0
-margin_bottom = 33.0
-min_value = 1.0
-max_value = 9.0
-value = 1.0
 
 [node name="FileDialog" type="FileDialog" parent="."]
 anchor_left = 0.5
@@ -150,25 +102,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SaveDialog" type="FileDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -332.0
-margin_top = -184.0
-margin_right = 332.0
-margin_bottom = 184.0
-window_title = "Guardar un Archivo"
-access = 2
-filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/azagaya/GameDev/ScaleNX"
-current_file = "icon.png"
-current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
 anchor_right = 1.0
@@ -178,48 +111,6 @@ color = Color( 0, 0, 0, 0.352941 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Scale27X" type="Viewport" parent="."]
-size = Vector2( 1, 1 )
-transparent_bg = true
-hdr = false
-disable_3d = true
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 0
-gui_disable_input = true
-
-[node name="Sprite" type="Sprite" parent="Scale27X"]
-material = SubResource( 4 )
-scale = Vector2( 3, 3 )
-
-[node name="Scale9X" type="Viewport" parent="."]
-size = Vector2( 1, 1 )
-transparent_bg = true
-hdr = false
-disable_3d = true
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 0
-gui_disable_input = true
-
-[node name="Sprite" type="Sprite" parent="Scale9X"]
-material = SubResource( 4 )
-scale = Vector2( 3, 3 )
-
-[node name="Scale3X" type="Viewport" parent="."]
-size = Vector2( 1, 1 )
-transparent_bg = true
-hdr = false
-disable_3d = true
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 0
-gui_disable_input = true
-
-[node name="Sprite" type="Sprite" parent="Scale3X"]
-material = SubResource( 4 )
-scale = Vector2( 3, 3 )
 
 [node name="PopupDialog" type="PopupDialog" parent="."]
 anchor_left = 0.5
@@ -267,9 +158,9 @@ margin_left = 39.0
 margin_right = 84.0
 margin_bottom = 25.0
 focus_mode = 2
-group = SubResource( 5 )
+group = SubResource( 3 )
 text = "View"
-items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Reset Pan", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
+items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Center to Origin", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
 switch_on_hover = true
 
 [node name="HelpMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
@@ -282,7 +173,6 @@ items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...",
 switch_on_hover = true
 
 [node name="AboutDialog" type="PopupDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -419,10 +309,55 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="value_changed" from="Panel/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_SpinBox_value_changed"]
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -213.0
+margin_top = 47.0
+margin_right = -13.0
+margin_bottom = 90.0
+grow_horizontal = 0
+mouse_filter = 2
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 195.0
+margin_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+margin_right = 190.0
+margin_bottom = 33.0
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 112.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+text = "Scale:"
+
+[node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_left = 116.0
+margin_right = 190.0
+margin_bottom = 33.0
+min_value = 1.0
+max_value = 9.0
+value = 1.0
+editable = false
+
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
-[connection signal="file_selected" from="SaveDialog" to="." method="_on_SaveDialog_file_selected"]
+[connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button2" to="AboutDialog" method="_on_Button2_pressed"]
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
+[connection signal="value_changed" from="Panel/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_SpinBox_value_changed"]

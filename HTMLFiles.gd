@@ -169,7 +169,7 @@ func load_image():
 	loaded_image = image.duplicate()
 	emit_signal("loaded")
 
-func save_image(image : Image, file_name : String = "export") -> void:
+func save_image(image : Image, file_name : String = "ScaleNXExports") -> void:
 	if OS.get_name() != "HTML5" or !OS.has_feature('JavaScript'):
 		return
 
