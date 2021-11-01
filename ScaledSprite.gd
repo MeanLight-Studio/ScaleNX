@@ -14,10 +14,11 @@ onready var viewport9X := $Scale9X
 onready var image := Image.new()
 
 func set_image_path(path : String) -> bool:
+	image_path = path
 	var error := image.load(path)
 	if error:
 		return false
-		
+	
 	update_image()
 	return true
 

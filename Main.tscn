@@ -91,8 +91,8 @@ margin_left = -332.0
 margin_top = -184.0
 margin_right = 332.0
 margin_bottom = 184.0
-window_title = "Open a File"
-mode = 0
+window_title = "Open File(s)"
+mode = 1
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
 current_dir = "/home/azagaya/GameDev/ScaleNX"
@@ -353,6 +353,10 @@ min_value = 1.0
 max_value = 9.0
 value = 1.0
 editable = false
+
+[node name="UnselectTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
 
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]

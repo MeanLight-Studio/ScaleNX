@@ -3,6 +3,7 @@ extends Control
 var selected_sprites := []
 
 var moving_camera := false
+var last_movement := Vector2.ZERO
 var last_mouse_position := Vector2.ZERO
 
 var zoom := 1.0
@@ -21,21 +22,28 @@ onready var viewport := $ViewportContainer/Viewport
 onready var sprites_container := $ViewportContainer/Viewport/Sprites
 onready var file_dialog := $FileDialog
 
+onready var unselect_timer := $UnselectTimer
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.is_pressed():
-			var mouse_position : Vector2 = viewport.get_mouse_position() - viewport.size / 2
+		if event.button_index == BUTTON_LEFT:
 			var multi = event.control
-			var selected := false
-			for sprite in sprites_container.get_children():
-				var s : Vector2 = sprite.texture.get_size()
-				var d : Vector2 = mouse_position - sprite.global_position
-				var r := Rect2((sprite.global_position - s/2)/zoom, s/zoom)
-				if r.has_point(mouse_position):
-					selected = true
-					set_selected_sprite(sprite, multi)
-			if not selected:
+			if event.is_pressed() and not multi:
 				clear_selection()
+			var clicked_sprite := get_clicked_sprite()
+			if clicked_sprite != null:
+				if event.is_pressed():
+					if clicked_sprite.selected:
+						if multi:
+							unselect_timer.start()
+					else:
+						set_selected_sprite(clicked_sprite)
+				else:
+					if not unselect_timer.is_stopped() and multi:
+						set_unselected_sprite(clicked_sprite)
+						
+				
+			
 		moving_camera = false
 		if event.button_index == BUTTON_MIDDLE and event.is_pressed():
 			moving_camera = true
@@ -45,6 +53,22 @@ func _unhandled_input(event):
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			zoom = clamp(zoom * 1.1, 0.01, 50)
 			camera.zoom = zoom * Vector2.ONE
+
+func get_clicked_sprite() -> Sprite:
+	var mouse_position : Vector2 = viewport.get_mouse_position() - viewport.size / 2
+	var clicked_sprite : Sprite = null
+	
+	for i in range(sprites_container.get_child_count()-1, -1, -1):
+		var sprite = sprites_container.get_child(i)
+		if not sprite.texture:
+			continue
+		var s : Vector2 = sprite.texture.get_size()
+		var d : Vector2 = mouse_position - sprite.global_position
+		var r := Rect2((sprite.global_position - s/2)/zoom, s/zoom)
+		if r.has_point(mouse_position):
+			clicked_sprite = sprite
+			break
+	return clicked_sprite
 
 func _ready():
 	$ColorRect.hide()
@@ -68,9 +92,10 @@ func _process(_delta):
 	
 	
 	if not selected_sprites.empty() and Input.is_action_pressed("left_click"):
-		var global_mouse_position = get_global_mouse_position()
+		var delta = (get_global_mouse_position() - last_mouse_position)*zoom
+		last_movement += delta
 		for sprite in selected_sprites:
-			sprite.position += (global_mouse_position - last_mouse_position)*zoom
+			sprite.position += delta
 	
 	last_mouse_position = get_global_mouse_position()
 	
@@ -107,7 +132,6 @@ func _on_FileDialog_file_selected(path):
 
 
 func save_images():
-	#TODO need to fix for multiple images
 	if sprites_container.get_child_count() == 0:
 		return
 	
@@ -117,8 +141,8 @@ func save_images():
 			var output_name : String = sprite.image_path
 			var extension := output_name.get_extension()
 			var ext_position = output_name.find_last(extension)
-			output_name.insert(ext_position - 1, "_"+str(sprite.factor)+"X")
-			sprite.texture.get_data().save_png(sprite.image_path)
+			output_name = output_name.insert(ext_position - 1, "_"+str(sprite.factor)+"X")
+			sprite.texture.get_data().save_png(output_name)
 
 
 func _on_export_file():
@@ -183,20 +207,18 @@ func _on_help_menu_id_pressed(id):
 			$AboutDialog.popup_centered()
 
 
-func set_selected_sprite(sprite : Sprite, multi := false):
-	if not multi:
-		clear_selection()
-	
-	if sprite != null:
-		selected_sprites.append(sprite)
+func set_selected_sprite(sprite : Sprite):
+	if not sprite in selected_sprites:
 		sprite.selected = true
-		spin_box.editable = true
-		if not multi:
-			spin_box.value = selected_sprites[0].factor
-	else:
-		spin_box.editable = false
-	
+		selected_sprites.append(sprite)
 
+	spin_box.editable = true
+	
+func set_unselected_sprite(sprite: Sprite):
+	if sprite in selected_sprites:
+		sprite.selected = false
+		selected_sprites.remove(selected_sprites.find(sprite))
+	spin_box.editable = not selected_sprites.empty()
 
 
 func _on_SpinBox_value_changed(value):
@@ -209,7 +231,7 @@ func clear_selection():
 	for sprite in selected_sprites:
 		sprite.selected = false
 	selected_sprites.clear()
-
+	spin_box.editable = false
 
 func _on_FileDialog_files_selected(paths):
 	$PopupDialog.popup()
