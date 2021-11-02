@@ -24,6 +24,8 @@ onready var file_dialog := $FileDialog
 
 onready var unselect_timer := $UnselectTimer
 
+onready var spinboxes := $SpinboxesContainer
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
@@ -64,7 +66,7 @@ func get_clicked_sprite() -> Sprite:
 			continue
 		var s : Vector2 = sprite.texture.get_size()
 		var d : Vector2 = mouse_position - sprite.global_position
-		var r := Rect2((sprite.global_position - s/2)/zoom, s/zoom)
+		var r := Rect2((sprite.global_position)/zoom, s/zoom)
 		if r.has_point(mouse_position):
 			clicked_sprite = sprite
 			break
@@ -113,22 +115,13 @@ func _on_import_files():
 		sprite.image = HtmlFiles.loaded_image.duplicate()
 		sprite.update_image()
 		
+		add_sprite(sprite)
+		
 		$ColorRect.hide()
 		$PopupDialog.hide()
 	else:
 		file_dialog.popup()
 
-
-func _on_FileDialog_file_selected(path):
-	$PopupDialog.popup()
-	$ColorRect.show()
-	
-	var sprite = preload("res://ScaledSprite.tscn").instance()
-	sprites_container.add_child(sprite)
-	sprite.set_image_path(path)
-	
-	$ColorRect.hide()
-	$PopupDialog.hide()
 
 
 func save_images():
@@ -220,13 +213,6 @@ func set_unselected_sprite(sprite: Sprite):
 		selected_sprites.remove(selected_sprites.find(sprite))
 	spin_box.editable = not selected_sprites.empty()
 
-
-func _on_SpinBox_value_changed(value):
-	if sprites_container.get_child_count() == 0:
-		return
-	for sprite in selected_sprites:
-		sprite.factor = value
-
 func clear_selection():
 	for sprite in selected_sprites:
 		sprite.selected = false
@@ -241,6 +227,16 @@ func _on_FileDialog_files_selected(paths):
 		var sprite = preload("res://ScaledSprite.tscn").instance()
 		sprites_container.add_child(sprite)
 		sprite.set_image_path(path)
+		add_sprite(sprite)
 	
 	$ColorRect.hide()
 	$PopupDialog.hide()
+
+func add_sprite(sprite):
+	var scale_spinbox := preload("res://ScaleSpinBox.tscn").instance()
+	scale_spinbox.sprite = sprite
+	spinboxes.add_child(scale_spinbox)
+	
+	var info_label : Label = preload("res://InfoLabel.tscn").instance()
+	info_label.sprite = sprite
+	$ScrollContainer/VBoxContainer.add_child(info_label)

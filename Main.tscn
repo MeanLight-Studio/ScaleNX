@@ -312,10 +312,10 @@ __meta__ = {
 [node name="Panel" type="PanelContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -213.0
+margin_left = -152.0
 margin_top = 47.0
 margin_right = -13.0
-margin_bottom = 90.0
+margin_bottom = 148.0
 grow_horizontal = 0
 mouse_filter = 2
 custom_styles/panel = SubResource( 4 )
@@ -326,8 +326,8 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 195.0
-margin_bottom = 38.0
+margin_right = 134.0
+margin_bottom = 104.0
 grow_horizontal = 2
 grow_vertical = 2
 __meta__ = {
@@ -335,33 +335,76 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
-margin_right = 190.0
+margin_right = 129.0
 margin_bottom = 33.0
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
-margin_right = 112.0
+margin_right = 51.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
 text = "Scale:"
 
 [node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_left = 116.0
-margin_right = 190.0
+margin_left = 55.0
+margin_right = 129.0
 margin_bottom = 33.0
 min_value = 1.0
 max_value = 9.0
 value = 1.0
-editable = false
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+margin_top = 37.0
+margin_right = 129.0
+margin_bottom = 41.0
+
+[node name="All" type="Button" parent="Panel/VBoxContainer"]
+margin_top = 45.0
+margin_right = 129.0
+margin_bottom = 70.0
+text = "Scale All"
+
+[node name="Selected" type="Button" parent="Panel/VBoxContainer"]
+margin_top = 74.0
+margin_right = 129.0
+margin_bottom = 99.0
+text = "Scale Selected"
 
 [node name="UnselectTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
-[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[node name="SpinboxesContainer" type="Control" parent="."]
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1016.0
+margin_top = 40.0
+margin_right = -832.0
+margin_bottom = -8.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 184.0
+margin_bottom = 552.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button2" to="AboutDialog" method="_on_Button2_pressed"]
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
-[connection signal="value_changed" from="Panel/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_SpinBox_value_changed"]

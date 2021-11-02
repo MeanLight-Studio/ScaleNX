@@ -1,5 +1,8 @@
 extends Sprite
 
+signal selected_changed(selected)
+signal scaled
+
 var image_path := "" setget set_image_path
 var original_texture := ImageTexture.new()
 var image3X := Image.new()
@@ -49,14 +52,12 @@ func update_image():
 	yield(get_tree(), "idle_frame")
 	image9X = viewport9X.get_texture().get_data().duplicate()
 
-	
-	
-	texture = original_texture
+	texture = original_texture.duplicate()
 	adjust_reference_rect()
+	
 	
 func adjust_reference_rect():
 	$ReferenceRect.rect_size = texture.get_size()
-	$ReferenceRect.rect_position = -texture.get_size()/2
 
 
 func set_factor(value):
@@ -78,10 +79,11 @@ func set_factor(value):
 
 	result.resize(value * image.get_width(), value * image.get_height(), Image.INTERPOLATE_NEAREST)
 
-	original_texture.create_from_image(result,0)
-	texture = original_texture.duplicate()
+	texture.create_from_image(result,0)
 	adjust_reference_rect()
+	emit_signal("scaled")
 
 func set_selected(s : bool):
 	selected = s
 	$ReferenceRect.visible = s
+	emit_signal("selected_changed", s)
