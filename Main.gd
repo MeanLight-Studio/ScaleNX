@@ -1,5 +1,7 @@
 extends Control
 
+signal selection_changed(selection)
+
 var selected_sprites := []
 
 var moving_camera := false
@@ -13,8 +15,6 @@ onready var camera := $ViewportContainer/Viewport/Camera2D
 onready var file_menu : PopupMenu = $ToolBar/VBoxContainer/FileMenu.get_popup()
 onready var view_menu : PopupMenu = $ToolBar/VBoxContainer/ViewMenu.get_popup()
 onready var help_menu : PopupMenu = $ToolBar/VBoxContainer/HelpMenu.get_popup()
-
-onready var spin_box := $Panel/VBoxContainer/HBoxContainer/SpinBox
 
 onready var checkboard := $CheckBoard
 
@@ -204,20 +204,20 @@ func set_selected_sprite(sprite : Sprite):
 	if not sprite in selected_sprites:
 		sprite.selected = true
 		selected_sprites.append(sprite)
-
-	spin_box.editable = true
+	
+	emit_signal("selection_changed", selected_sprites)
 	
 func set_unselected_sprite(sprite: Sprite):
 	if sprite in selected_sprites:
 		sprite.selected = false
 		selected_sprites.remove(selected_sprites.find(sprite))
-	spin_box.editable = not selected_sprites.empty()
+	emit_signal("selection_changed", selected_sprites)
 
 func clear_selection():
 	for sprite in selected_sprites:
 		sprite.selected = false
 	selected_sprites.clear()
-	spin_box.editable = false
+	emit_signal("selection_changed", selected_sprites)
 
 func _on_FileDialog_files_selected(paths):
 	$PopupDialog.popup()

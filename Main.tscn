@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://GlobalScalePanel.gd" type="Script" id=3]
 [ext_resource path="res://Images/spriteshift.png" type="Texture" id=4]
 [ext_resource path="res://Images/twitter.png" type="Texture" id=5]
 [ext_resource path="res://Images/itchio.png" type="Texture" id=6]
@@ -91,13 +92,13 @@ margin_left = -332.0
 margin_top = -184.0
 margin_right = 332.0
 margin_bottom = 184.0
-window_title = "Open File(s)"
+window_title = "Abrir Archivo(s)"
 mode = 1
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/azagaya/GameDev/ScaleNX"
+current_dir = "/home/pablo/Documentos/ScaleNX"
 current_file = "icon.png"
-current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
+current_path = "/home/pablo/Documentos/ScaleNX/icon.png"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -309,7 +310,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="GlobalScalePanel" type="PanelContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -152.0
@@ -318,34 +319,41 @@ margin_right = -13.0
 margin_bottom = 148.0
 grow_horizontal = 0
 mouse_filter = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
 custom_styles/panel = SubResource( 4 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+sprites_container_path = NodePath("../ViewportContainer/Viewport/Sprites")
+main_path = NodePath("..")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GlobalScalePanel"]
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 134.0
 margin_bottom = 104.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GlobalScalePanel/VBoxContainer"]
 margin_right = 129.0
 margin_bottom = 33.0
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="GlobalScalePanel/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
 margin_right = 51.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
 text = "Scale:"
 
-[node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="GlobalScalePanel/VBoxContainer/HBoxContainer"]
 margin_left = 55.0
 margin_right = 129.0
 margin_bottom = 33.0
@@ -353,18 +361,18 @@ min_value = 1.0
 max_value = 9.0
 value = 1.0
 
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="GlobalScalePanel/VBoxContainer"]
 margin_top = 37.0
 margin_right = 129.0
 margin_bottom = 41.0
 
-[node name="All" type="Button" parent="Panel/VBoxContainer"]
+[node name="All" type="Button" parent="GlobalScalePanel/VBoxContainer"]
 margin_top = 45.0
 margin_right = 129.0
 margin_bottom = 70.0
 text = "Scale All"
 
-[node name="Selected" type="Button" parent="Panel/VBoxContainer"]
+[node name="Selected" type="Button" parent="GlobalScalePanel/VBoxContainer"]
 margin_top = 74.0
 margin_right = 129.0
 margin_bottom = 99.0
@@ -381,12 +389,10 @@ __meta__ = {
 }
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1016.0
+margin_left = 8.0
 margin_top = 40.0
-margin_right = -832.0
+margin_right = 192.0
 margin_bottom = -8.0
 mouse_filter = 2
 __meta__ = {
@@ -408,3 +414,5 @@ alignment = 2
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button2" to="AboutDialog" method="_on_Button2_pressed"]
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
+[connection signal="pressed" from="GlobalScalePanel/VBoxContainer/All" to="GlobalScalePanel" method="_on_All_pressed"]
+[connection signal="pressed" from="GlobalScalePanel/VBoxContainer/Selected" to="GlobalScalePanel" method="_on_Selected_pressed"]
