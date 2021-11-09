@@ -26,6 +26,8 @@ onready var unselect_timer := $UnselectTimer
 
 onready var spinboxes := $SpinboxesContainer
 
+onready var info_container := $ScrollContainer/VBoxContainer
+
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
@@ -43,8 +45,6 @@ func _unhandled_input(event):
 				else:
 					if not unselect_timer.is_stopped() and multi:
 						set_unselected_sprite(clicked_sprite)
-						
-				
 			
 		moving_camera = false
 		if event.button_index == BUTTON_MIDDLE and event.is_pressed():
@@ -55,6 +55,11 @@ func _unhandled_input(event):
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			zoom = clamp(zoom * 1.1, 0.01, 50)
 			camera.zoom = zoom * Vector2.ONE
+			
+	if event.is_action_pressed("delete"):
+		for sprite in selected_sprites:
+			delete_sprite(sprite)
+		clear_selection()
 
 func get_clicked_sprite() -> Sprite:
 	var mouse_position : Vector2 = viewport.get_mouse_position() - viewport.size / 2
@@ -240,3 +245,14 @@ func add_sprite(sprite):
 	var info_label : Label = preload("res://InfoLabel.tscn").instance()
 	info_label.sprite = sprite
 	$ScrollContainer/VBoxContainer.add_child(info_label)
+	
+func delete_sprite(sprite):
+	for spinbox in spinboxes.get_children():
+		if spinbox.sprite == sprite:
+			spinbox.queue_free()
+			break
+	for label in info_container.get_children():
+		if label.sprite == sprite:
+			label.queue_free()
+			break
+	sprite.queue_free()
