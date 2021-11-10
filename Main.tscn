@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Images/twitter.png" type="Texture" id=5]
 [ext_resource path="res://Images/itchio.png" type="Texture" id=6]
 [ext_resource path="res://AboutDialog.gd" type="Script" id=7]
+[ext_resource path="res://Images/ReloadSmall.svg" type="Texture" id=8]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -409,6 +410,36 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+modulate = Color( 1, 1, 1, 0.52549 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -78.0
+margin_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ZoomIndicator" type="Label" parent="HBoxContainer"]
+margin_top = 8.0
+margin_right = 83.0
+margin_bottom = 31.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/line_spacing = 1
+text = "Zoom: 1.00"
+
+[node name="ResetZoom" type="Button" parent="HBoxContainer"]
+margin_left = 87.0
+margin_right = 113.0
+margin_bottom = 40.0
+icon = ExtResource( 8 )
+flat = true
+
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
@@ -416,3 +447,4 @@ alignment = 2
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/All" to="GlobalScalePanel" method="_on_All_pressed"]
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/Selected" to="GlobalScalePanel" method="_on_Selected_pressed"]
+[connection signal="pressed" from="HBoxContainer/ResetZoom" to="." method="_on_ResetZoom_pressed"]

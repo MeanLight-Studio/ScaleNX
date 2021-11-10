@@ -8,7 +8,7 @@ var moving_camera := false
 var last_movement := Vector2.ZERO
 var last_mouse_position := Vector2.ZERO
 
-var zoom := 1.0
+var zoom := 1.0 setget set_zoom
 
 onready var camera := $ViewportContainer/Viewport/Camera2D
 
@@ -50,11 +50,9 @@ func _unhandled_input(event):
 		if event.button_index == BUTTON_MIDDLE and event.is_pressed():
 			moving_camera = true
 		elif event.button_index == BUTTON_WHEEL_UP:
-			zoom = clamp(zoom * 0.9, 0.01, 50)
-			camera.zoom = zoom * Vector2.ONE
+			self.zoom = clamp(zoom * 0.9, 0.01, 50)
 		elif event.button_index == BUTTON_WHEEL_DOWN:
-			zoom = clamp(zoom * 1.1, 0.01, 50)
-			camera.zoom = zoom * Vector2.ONE
+			self.zoom = clamp(zoom * 1.1, 0.01, 50)
 			
 	if event.is_action_pressed("delete"):
 		for sprite in selected_sprites:
@@ -165,8 +163,7 @@ func _on_file_menu_id_pressed(id):
 func _on_view_menu_id_pressed(id):
 	match id:
 		0:
-			zoom = 1
-			camera.zoom = Vector2.ONE
+			self.zoom = 1
 		1:
 			if sprites_container.get_child_count() == 0:
 				return
@@ -181,8 +178,7 @@ func _on_view_menu_id_pressed(id):
 			if rect.size != Vector2.ZERO:
 				camera.position = rect.position + rect.size/2
 				var ratio = rect.size / (get_viewport().size-Vector2(0.0,100.0))
-				zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
-				camera.zoom = zoom * Vector2.ONE
+				self.zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
 				
 		2:
 			sprites_container.position = Vector2.ZERO
@@ -255,3 +251,12 @@ func delete_sprite(sprite):
 			label.queue_free()
 			break
 	sprite.queue_free()
+	
+func set_zoom(z):
+	zoom = z
+	camera.zoom = Vector2.ONE*zoom
+	$HBoxContainer/ZoomIndicator.text = "Zoom: %.2f" % (1.0/zoom)
+
+
+func _on_ResetZoom_pressed():
+	self.zoom = 1
