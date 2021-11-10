@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Images/itchio.png" type="Texture" id=6]
 [ext_resource path="res://AboutDialog.gd" type="Script" id=7]
 [ext_resource path="res://Images/ReloadSmall.svg" type="Texture" id=8]
+[ext_resource path="res://Gizmo.gd" type="Script" id=9]
+[ext_resource path="res://Images/gizmo.svg" type="Texture" id=10]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -62,6 +64,20 @@ mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Gizmo" type="TextureRect" parent="CheckBoard"]
+modulate = Color( 1, 1, 1, 0.533333 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+script = ExtResource( 9 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_right = 1.0
@@ -441,7 +457,6 @@ icon = ExtResource( 8 )
 flat = true
 
 [node name="DeleteWarning" type="ConfirmationDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

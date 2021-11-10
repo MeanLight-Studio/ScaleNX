@@ -185,7 +185,7 @@ func _on_view_menu_id_pressed(id):
 				self.zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
 				
 		2:
-			sprites_container.position = Vector2.ZERO
+			camera.position = Vector2.ZERO
 		4:
 			view_menu.toggle_item_checked(view_menu.get_item_index(id))
 			view_menu.toggle_item_checked(view_menu.get_item_index(5))
