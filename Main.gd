@@ -71,7 +71,7 @@ func get_clicked_sprite() -> Sprite:
 			continue
 		var s : Vector2 = sprite.texture.get_size()
 		var d : Vector2 = mouse_position - sprite.global_position
-		var r := Rect2((sprite.global_position)/zoom, s/zoom)
+		var r := Rect2((sprite.global_position-camera.position)/zoom, s/zoom)
 		if r.has_point(mouse_position):
 			clicked_sprite = sprite
 			break
@@ -95,7 +95,7 @@ func _on_files_dropped(files, screen):
 
 func _process(_delta):
 	if moving_camera:
-		sprites_container.position += (get_global_mouse_position() - last_mouse_position)*zoom
+		camera.position -= (get_global_mouse_position() - last_mouse_position)*zoom
 	
 	
 	if not selected_sprites.empty() and Input.is_action_pressed("left_click"):
@@ -173,15 +173,14 @@ func _on_view_menu_id_pressed(id):
 			var rect := Rect2(0,0,0,0)
 			for sprite in sprites_container.get_children():
 				var s : Vector2 = sprite.texture.get_size()
-				var r := Rect2((sprite.global_position - s/2), s)
+				var r := Rect2((sprite.global_position), s)
 				if rect.size == Vector2.ZERO:
 					rect = r
 				else:
 					rect = rect.merge(r)
 			if rect.size != Vector2.ZERO:
-				
-				sprites_container.position -= rect.position + rect.size / 2
-				var ratio = rect.size / get_viewport().size
+				camera.position = rect.position + rect.size/2
+				var ratio = rect.size / (get_viewport().size-Vector2(0.0,100.0))
 				zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
 				camera.zoom = zoom * Vector2.ONE
 				

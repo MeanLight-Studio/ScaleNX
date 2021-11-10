@@ -13,7 +13,7 @@ func set_selected(s : bool):
 func _process(delta):
 	if sprite.texture:
 		var s := sprite.texture.get_size()
-		rect_position = (sprite.global_position)/main.zoom + get_viewport_rect().size/2 - Vector2(0, rect_size.y + 5)
+		rect_position = (sprite.global_position - main.camera.position)/main.zoom + get_viewport_rect().size/2 - Vector2(0, rect_size.y + 5)
 
 func set_sprite(s : Sprite):
 	sprite = s
