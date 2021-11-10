@@ -3,6 +3,7 @@ extends Control
 signal selection_changed(selection)
 
 var selected_sprites := []
+var sprites_to_delete := []
 
 var moving_camera := false
 var last_movement := Vector2.ZERO
@@ -27,6 +28,8 @@ onready var unselect_timer := $UnselectTimer
 onready var spinboxes := $SpinboxesContainer
 
 onready var info_container := $ScrollContainer/VBoxContainer
+
+onready var delete_warning := $DeleteWarning
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -55,8 +58,7 @@ func _unhandled_input(event):
 			self.zoom = clamp(zoom * 1.1, 0.01, 50)
 			
 	if event.is_action_pressed("delete"):
-		for sprite in selected_sprites:
-			delete_sprite(sprite)
+		delete_sprites(selected_sprites.duplicate())
 		clear_selection()
 
 func get_clicked_sprite() -> Sprite:
@@ -158,6 +160,8 @@ func _on_file_menu_id_pressed(id):
 		1:
 			_on_export_file()
 		2:
+			delete_sprites(sprites_container.get_children())
+		3:
 			get_tree().quit()
 	
 func _on_view_menu_id_pressed(id):
@@ -250,6 +254,8 @@ func delete_sprite(sprite):
 		if label.sprite == sprite:
 			label.queue_free()
 			break
+	if sprite in selected_sprites:
+		selected_sprites.remove(selected_sprites.find(sprite))
 	sprite.queue_free()
 	
 func set_zoom(z):
@@ -260,3 +266,15 @@ func set_zoom(z):
 
 func _on_ResetZoom_pressed():
 	self.zoom = 1
+
+func delete_sprites(sprites : Array):
+	sprites_to_delete = sprites
+	var sprites_names := ""
+	for sprite in sprites:
+		sprites_names += sprite.image_path + "\n"
+	delete_warning.get_node("TextEdit").text = sprites_names
+	delete_warning.popup_centered()
+
+func _on_DeleteWarning_confirmed():
+	for sprite in sprites_to_delete:
+		delete_sprite(sprite)

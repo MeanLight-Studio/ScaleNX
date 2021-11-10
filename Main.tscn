@@ -367,7 +367,7 @@ margin_bottom = 30.0
 margin_right = 35.0
 margin_bottom = 25.0
 text = "File"
-items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Exit", null, 0, false, false, 2, 0, null, "", false ]
+items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Clear Canvas", null, 0, false, false, 2, 0, null, "", false, "Exit", null, 0, false, false, 3, 0, null, "", false ]
 switch_on_hover = true
 
 [node name="ViewMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
@@ -440,6 +440,27 @@ margin_bottom = 40.0
 icon = ExtResource( 8 )
 flat = true
 
+[node name="DeleteWarning" type="ConfirmationDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -216.0
+margin_top = -128.0
+margin_right = 216.0
+margin_bottom = 52.0
+dialog_text = "Are you sure you want to delete the following sprites?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="DeleteWarning"]
+margin_left = 8.0
+margin_top = 31.0
+margin_right = 424.0
+margin_bottom = 139.0
+
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
@@ -448,3 +469,4 @@ flat = true
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/All" to="GlobalScalePanel" method="_on_All_pressed"]
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/Selected" to="GlobalScalePanel" method="_on_Selected_pressed"]
 [connection signal="pressed" from="HBoxContainer/ResetZoom" to="." method="_on_ResetZoom_pressed"]
+[connection signal="confirmed" from="DeleteWarning" to="." method="_on_DeleteWarning_confirmed"]
