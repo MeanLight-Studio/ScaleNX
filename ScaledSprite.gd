@@ -4,6 +4,7 @@ signal selected_changed(selected)
 signal scaled
 
 var image_path := "" setget set_image_path
+var image_name := ""
 var original_texture := ImageTexture.new()
 var image3X := Image.new()
 var image9X := Image.new()
@@ -23,6 +24,7 @@ func set_image_path(path : String) -> bool:
 		return false
 	
 	update_image()
+	image_name = image_path.get_file()
 	return true
 
 func update_image():

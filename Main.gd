@@ -148,7 +148,6 @@ func _on_export_file():
 		return
 		
 	if OS.get_name() == "HTML5":
-		# TODO FIX THIS
 		HtmlFiles.save_image(selected_sprites[0].texture.get_data())
 	else:
 		save_images()
