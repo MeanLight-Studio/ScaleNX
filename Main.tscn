@@ -29,8 +29,6 @@ shader = SubResource( 1 )
 shader_param/square_pixels = Vector2( 32, 32 )
 shader_param/brightness = 0.0
 
-[sub_resource type="ButtonGroup" id=3]
-
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 5.0
 content_margin_right = 5.0
@@ -42,6 +40,8 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="ButtonGroup" id=3]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -133,45 +133,6 @@ margin_top = -11.5
 margin_right = 47.5
 margin_bottom = 11.5
 text = "Calculating..."
-
-[node name="ToolBar" type="PanelContainer" parent="."]
-anchor_right = 1.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="HBoxContainer" parent="ToolBar"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 1019.0
-margin_bottom = 30.0
-
-[node name="FileMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_right = 35.0
-margin_bottom = 25.0
-text = "File"
-items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Exit", null, 0, false, false, 2, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="ViewMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_left = 39.0
-margin_right = 84.0
-margin_bottom = 25.0
-focus_mode = 2
-group = SubResource( 3 )
-text = "View"
-items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Center to Origin", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="HelpMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_left = 88.0
-margin_right = 133.0
-margin_bottom = 25.0
-focus_mode = 2
-text = "Help"
-items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...", null, 0, false, false, 1, 0, null, "", false ]
-switch_on_hover = true
 
 [node name="AboutDialog" type="PopupDialog" parent="."]
 anchor_left = 0.5
@@ -310,13 +271,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="UnselectTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="SpinboxesContainer" type="Control" parent="."]
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GlobalScalePanel" type="PanelContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -152.0
 margin_top = 47.0
 margin_right = -13.0
-margin_bottom = 148.0
+margin_bottom = 156.0
 grow_horizontal = 0
 mouse_filter = 2
 size_flags_horizontal = 5
@@ -378,15 +349,44 @@ margin_right = 129.0
 margin_bottom = 99.0
 text = "Scale Selected"
 
-[node name="UnselectTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-
-[node name="SpinboxesContainer" type="Control" parent="."]
-mouse_filter = 2
+[node name="ToolBar" type="PanelContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 35.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="VBoxContainer" type="HBoxContainer" parent="ToolBar"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 30.0
+
+[node name="FileMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_right = 35.0
+margin_bottom = 25.0
+text = "File"
+items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Exit", null, 0, false, false, 2, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="ViewMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_left = 39.0
+margin_right = 84.0
+margin_bottom = 25.0
+focus_mode = 2
+group = SubResource( 3 )
+text = "View"
+items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Center to Origin", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="HelpMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_left = 88.0
+margin_right = 133.0
+margin_bottom = 25.0
+focus_mode = 2
+text = "Help"
+items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...", null, 0, false, false, 1, 0, null, "", false ]
+switch_on_hover = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_bottom = 1.0
