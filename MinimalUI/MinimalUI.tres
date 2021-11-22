@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=53 format=2]
+[gd_resource type="Theme" load_steps=55 format=2]
 
 [ext_resource path="res://MinimalUI/OpenSans-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://MinimalUI/icons.svg" type="Texture" id=2]
@@ -203,6 +203,18 @@ bg_color = Color( 0, 0, 0, 1 )
 border_width_bottom = 1
 border_color = Color( 0.301961, 0.301961, 0.301961, 1 )
 
+[sub_resource type="StyleBoxFlat" id=51]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
 [sub_resource type="StyleBoxFlat" id=31]
 bg_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
@@ -354,6 +366,19 @@ corner_radius_top_left = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id=52]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+expand_margin_top = 22.0
+
 [sub_resource type="DynamicFont" id=50]
 font_data = ExtResource( 1 )
 
@@ -449,7 +474,7 @@ LineEdit/styles/normal = SubResource( 28 )
 LineEdit/styles/read_only = SubResource( 29 )
 Panel/styles/panel = SubResource( 1 )
 PanelContainer/styles/panel = SubResource( 30 )
-PopupDialog/styles/panel = SubResource( 1 )
+PopupDialog/styles/panel = SubResource( 51 )
 PopupMenu/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
 PopupMenu/colors/font_color_disabled = Color( 0.4, 0.4, 0.4, 0.8 )
@@ -533,6 +558,7 @@ TextEdit/styles/completion = null
 TextEdit/styles/focus = SubResource( 27 )
 TextEdit/styles/normal = SubResource( 39 )
 TextEdit/styles/read_only = SubResource( 29 )
+TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
 Tree/colors/custom_button_font_highlight = Color( 0.94, 0.94, 0.94, 1 )
 Tree/colors/drop_position_color = Color( 1, 0.3, 0.2, 1 )
 Tree/colors/font_color = Color( 0.69, 0.69, 0.69, 1 )
@@ -587,7 +613,7 @@ VSlider/icons/tick = null
 VSlider/styles/grabber_area = SubResource( 47 )
 VSlider/styles/grabber_area_highlight = SubResource( 48 )
 VSlider/styles/slider = SubResource( 49 )
-WindowDialog/colors/title_color = Color( 0, 0, 0, 1 )
+WindowDialog/colors/title_color = Color( 1, 1, 1, 1 )
 WindowDialog/constants/close_h_ofs = 18
 WindowDialog/constants/close_v_ofs = 18
 WindowDialog/constants/scaleborder_size = 4
@@ -595,4 +621,4 @@ WindowDialog/constants/title_height = 20
 WindowDialog/fonts/title_font = null
 WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
-WindowDialog/styles/panel = SubResource( 1 )
+WindowDialog/styles/panel = SubResource( 52 )

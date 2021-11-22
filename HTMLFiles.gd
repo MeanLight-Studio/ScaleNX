@@ -43,6 +43,7 @@ func _notification(notification:int) -> void:
 func _define_js() -> void:
 	# Define JS script
 	JavaScript.eval("""
+	import { downloadZip } from "https://cdn.jsdelivr.net/npm/client-zip/index.js"
 	var fileData;
 	var fileType;
 	var fileName;
@@ -68,53 +69,7 @@ func _define_js() -> void:
 			}
 		  });
 	}
-	function upload_palette() {
-		canceled = true;
-		var input = document.createElement('INPUT');
-		input.setAttribute("type", "file");
-		input.setAttribute("accept", "application/json, .gpl, .pal, image/png, image/jpeg, image/webp");
-		input.click();
-		input.addEventListener('change', event => {
-			if (event.target.files.length > 0){
-				canceled = false;}
-			var file = event.target.files[0];
-			var reader = new FileReader();
-			fileType = file.type;
-			fileName = file.name;
-			if (fileType == "image/png" || fileType == "image/jpeg" || fileType == "image/webp"){
-				reader.readAsArrayBuffer(file);
-			}
-			else {
-				reader.readAsText(file);
-			}
-			reader.onloadend = function (evt) {
-				if (evt.target.readyState == FileReader.DONE) {
-					fileData = evt.target.result;
-				}
-			}
-		  });
-	}
-	function upload_shader() {
-		canceled = true;
-		var input = document.createElement('INPUT');
-		input.setAttribute("type", "file");
-		input.setAttribute("accept", ".shader");
-		input.click();
-		input.addEventListener('change', event => {
-			if (event.target.files.length > 0){
-				canceled = false;}
-			var file = event.target.files[0];
-			var reader = new FileReader();
-			fileType = file.type;
-			fileName = file.name;
-			reader.readAsText(file);
-			reader.onloadend = function (evt) {
-				if (evt.target.readyState == FileReader.DONE) {
-					fileData = evt.target.result;
-				}
-			}
-		  });
-	}
+
 	function download(fileName, byte, type) {
 		var buffer = Uint8Array.from(byte);
 		var blob = new Blob([buffer], { type: type});
@@ -122,7 +77,9 @@ func _define_js() -> void:
 		link.href = window.URL.createObjectURL(blob);
 		link.download = fileName;
 		link.click();
+		link.remove()
 	};
+	
 	""", true)
 
 
@@ -175,3 +132,4 @@ func save_image(image : Image, file_name : String = "ScaleNXExports") -> void:
 
 	var png_data = Array(image.save_png_to_buffer())
 	JavaScript.eval("download('%s', %s, 'image/png');" % [file_name, str(png_data)], true)
+	

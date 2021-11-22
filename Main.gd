@@ -1,20 +1,21 @@
 extends Control
 
+signal selection_changed(selection)
+
 var selected_sprites := []
+var sprites_to_delete := []
 
 var moving_camera := false
 var last_movement := Vector2.ZERO
 var last_mouse_position := Vector2.ZERO
 
-var zoom := 1.0
+var zoom := 1.0 setget set_zoom
 
 onready var camera := $ViewportContainer/Viewport/Camera2D
 
 onready var file_menu : PopupMenu = $ToolBar/VBoxContainer/FileMenu.get_popup()
 onready var view_menu : PopupMenu = $ToolBar/VBoxContainer/ViewMenu.get_popup()
 onready var help_menu : PopupMenu = $ToolBar/VBoxContainer/HelpMenu.get_popup()
-
-onready var spin_box := $Panel/VBoxContainer/HBoxContainer/SpinBox
 
 onready var checkboard := $CheckBoard
 
@@ -25,6 +26,10 @@ onready var file_dialog := $FileDialog
 onready var unselect_timer := $UnselectTimer
 
 onready var spinboxes := $SpinboxesContainer
+
+onready var info_container := $ScrollContainer/VBoxContainer
+
+onready var delete_warning := $DeleteWarning
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -43,18 +48,18 @@ func _unhandled_input(event):
 				else:
 					if not unselect_timer.is_stopped() and multi:
 						set_unselected_sprite(clicked_sprite)
-						
-				
 			
 		moving_camera = false
 		if event.button_index == BUTTON_MIDDLE and event.is_pressed():
 			moving_camera = true
 		elif event.button_index == BUTTON_WHEEL_UP:
-			zoom = clamp(zoom * 0.9, 0.01, 50)
-			camera.zoom = zoom * Vector2.ONE
+			self.zoom = clamp(zoom * 0.9, 0.01, 50)
 		elif event.button_index == BUTTON_WHEEL_DOWN:
-			zoom = clamp(zoom * 1.1, 0.01, 50)
-			camera.zoom = zoom * Vector2.ONE
+			self.zoom = clamp(zoom * 1.1, 0.01, 50)
+			
+	if event.is_action_pressed("delete"):
+		delete_sprites(selected_sprites.duplicate())
+		clear_selection()
 
 func get_clicked_sprite() -> Sprite:
 	var mouse_position : Vector2 = viewport.get_mouse_position() - viewport.size / 2
@@ -66,7 +71,7 @@ func get_clicked_sprite() -> Sprite:
 			continue
 		var s : Vector2 = sprite.texture.get_size()
 		var d : Vector2 = mouse_position - sprite.global_position
-		var r := Rect2((sprite.global_position)/zoom, s/zoom)
+		var r := Rect2((sprite.global_position-camera.position)/zoom, s/zoom)
 		if r.has_point(mouse_position):
 			clicked_sprite = sprite
 			break
@@ -90,7 +95,7 @@ func _on_files_dropped(files, screen):
 
 func _process(_delta):
 	if moving_camera:
-		sprites_container.position += (get_global_mouse_position() - last_mouse_position)*zoom
+		camera.position -= (get_global_mouse_position() - last_mouse_position)*zoom
 	
 	
 	if not selected_sprites.empty() and Input.is_action_pressed("left_click"):
@@ -143,7 +148,6 @@ func _on_export_file():
 		return
 		
 	if OS.get_name() == "HTML5":
-		# TODO FIX THIS
 		HtmlFiles.save_image(selected_sprites[0].texture.get_data())
 	else:
 		save_images()
@@ -155,33 +159,32 @@ func _on_file_menu_id_pressed(id):
 		1:
 			_on_export_file()
 		2:
+			delete_sprites(sprites_container.get_children())
+		3:
 			get_tree().quit()
 	
 func _on_view_menu_id_pressed(id):
 	match id:
 		0:
-			zoom = 1
-			camera.zoom = Vector2.ONE
+			self.zoom = 1
 		1:
 			if sprites_container.get_child_count() == 0:
 				return
 			var rect := Rect2(0,0,0,0)
 			for sprite in sprites_container.get_children():
 				var s : Vector2 = sprite.texture.get_size()
-				var r := Rect2((sprite.global_position - s/2), s)
+				var r := Rect2((sprite.global_position), s)
 				if rect.size == Vector2.ZERO:
 					rect = r
 				else:
 					rect = rect.merge(r)
 			if rect.size != Vector2.ZERO:
-				
-				sprites_container.position -= rect.position + rect.size / 2
-				var ratio = rect.size / get_viewport().size
-				zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
-				camera.zoom = zoom * Vector2.ONE
+				camera.position = rect.position + rect.size/2
+				var ratio = rect.size / (get_viewport().size-Vector2(0.0,100.0))
+				self.zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
 				
 		2:
-			sprites_container.position = Vector2.ZERO
+			camera.position = Vector2.ZERO
 		4:
 			view_menu.toggle_item_checked(view_menu.get_item_index(id))
 			view_menu.toggle_item_checked(view_menu.get_item_index(5))
@@ -204,20 +207,20 @@ func set_selected_sprite(sprite : Sprite):
 	if not sprite in selected_sprites:
 		sprite.selected = true
 		selected_sprites.append(sprite)
-
-	spin_box.editable = true
+	
+	emit_signal("selection_changed", selected_sprites)
 	
 func set_unselected_sprite(sprite: Sprite):
 	if sprite in selected_sprites:
 		sprite.selected = false
 		selected_sprites.remove(selected_sprites.find(sprite))
-	spin_box.editable = not selected_sprites.empty()
+	emit_signal("selection_changed", selected_sprites)
 
 func clear_selection():
 	for sprite in selected_sprites:
 		sprite.selected = false
 	selected_sprites.clear()
-	spin_box.editable = false
+	emit_signal("selection_changed", selected_sprites)
 
 func _on_FileDialog_files_selected(paths):
 	$PopupDialog.popup()
@@ -240,3 +243,37 @@ func add_sprite(sprite):
 	var info_label : Label = preload("res://InfoLabel.tscn").instance()
 	info_label.sprite = sprite
 	$ScrollContainer/VBoxContainer.add_child(info_label)
+	
+func delete_sprite(sprite):
+	for spinbox in spinboxes.get_children():
+		if spinbox.sprite == sprite:
+			spinbox.queue_free()
+			break
+	for label in info_container.get_children():
+		if label.sprite == sprite:
+			label.queue_free()
+			break
+	if sprite in selected_sprites:
+		selected_sprites.remove(selected_sprites.find(sprite))
+	sprite.queue_free()
+	
+func set_zoom(z):
+	zoom = z
+	camera.zoom = Vector2.ONE*zoom
+	$HBoxContainer/ZoomIndicator.text = "Zoom: %.2f" % (1.0/zoom)
+
+
+func _on_ResetZoom_pressed():
+	self.zoom = 1
+
+func delete_sprites(sprites : Array):
+	sprites_to_delete = sprites
+	var sprites_names := ""
+	for sprite in sprites:
+		sprites_names += sprite.image_path + "\n"
+	delete_warning.get_node("TextEdit").text = sprites_names
+	delete_warning.popup_centered()
+
+func _on_DeleteWarning_confirmed():
+	for sprite in sprites_to_delete:
+		delete_sprite(sprite)

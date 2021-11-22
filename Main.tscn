@@ -1,11 +1,15 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://GlobalScalePanel.gd" type="Script" id=3]
 [ext_resource path="res://Images/spriteshift.png" type="Texture" id=4]
 [ext_resource path="res://Images/twitter.png" type="Texture" id=5]
 [ext_resource path="res://Images/itchio.png" type="Texture" id=6]
 [ext_resource path="res://AboutDialog.gd" type="Script" id=7]
+[ext_resource path="res://Images/ReloadSmall.svg" type="Texture" id=8]
+[ext_resource path="res://Gizmo.gd" type="Script" id=9]
+[ext_resource path="res://Images/gizmo.svg" type="Texture" id=10]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -28,8 +32,6 @@ shader = SubResource( 1 )
 shader_param/square_pixels = Vector2( 32, 32 )
 shader_param/brightness = 0.0
 
-[sub_resource type="ButtonGroup" id=3]
-
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 5.0
 content_margin_right = 5.0
@@ -41,6 +43,8 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="ButtonGroup" id=3]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -57,6 +61,24 @@ material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gizmo" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.533333 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 14.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 17.5, 17.5 )
+mouse_filter = 2
+texture = ExtResource( 10 )
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -95,9 +117,9 @@ window_title = "Open File(s)"
 mode = 1
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/azagaya/GameDev/ScaleNX"
+current_dir = "/home/pablo/Documentos/ScaleNX"
 current_file = "icon.png"
-current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
+current_path = "/home/pablo/Documentos/ScaleNX/icon.png"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -132,45 +154,6 @@ margin_top = -11.5
 margin_right = 47.5
 margin_bottom = 11.5
 text = "Calculating..."
-
-[node name="ToolBar" type="PanelContainer" parent="."]
-anchor_right = 1.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="HBoxContainer" parent="ToolBar"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 1019.0
-margin_bottom = 30.0
-
-[node name="FileMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_right = 35.0
-margin_bottom = 25.0
-text = "File"
-items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Exit", null, 0, false, false, 2, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="ViewMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_left = 39.0
-margin_right = 84.0
-margin_bottom = 25.0
-focus_mode = 2
-group = SubResource( 3 )
-text = "View"
-items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Center to Origin", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
-switch_on_hover = true
-
-[node name="HelpMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
-margin_left = 88.0
-margin_right = 133.0
-margin_bottom = 25.0
-focus_mode = 2
-text = "Help"
-items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...", null, 0, false, false, 1, 0, null, "", false ]
-switch_on_hover = true
 
 [node name="AboutDialog" type="PopupDialog" parent="."]
 anchor_left = 0.5
@@ -309,67 +292,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="PanelContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -152.0
-margin_top = 47.0
-margin_right = -13.0
-margin_bottom = 148.0
-grow_horizontal = 0
-mouse_filter = 2
-custom_styles/panel = SubResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 134.0
-margin_bottom = 104.0
-grow_horizontal = 2
-grow_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
-margin_right = 129.0
-margin_bottom = 33.0
-
-[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_top = 5.0
-margin_right = 51.0
-margin_bottom = 28.0
-size_flags_horizontal = 3
-text = "Scale:"
-
-[node name="SpinBox" type="SpinBox" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_left = 55.0
-margin_right = 129.0
-margin_bottom = 33.0
-min_value = 1.0
-max_value = 9.0
-value = 1.0
-
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
-margin_top = 37.0
-margin_right = 129.0
-margin_bottom = 41.0
-
-[node name="All" type="Button" parent="Panel/VBoxContainer"]
-margin_top = 45.0
-margin_right = 129.0
-margin_bottom = 70.0
-text = "Scale All"
-
-[node name="Selected" type="Button" parent="Panel/VBoxContainer"]
-margin_top = 74.0
-margin_right = 129.0
-margin_bottom = 99.0
-text = "Scale Selected"
-
 [node name="UnselectTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
@@ -380,13 +302,118 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="GlobalScalePanel" type="PanelContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
+margin_left = -152.0
+margin_top = 47.0
+margin_right = -13.0
+margin_bottom = 156.0
+grow_horizontal = 0
+mouse_filter = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+custom_styles/panel = SubResource( 4 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+sprites_container_path = NodePath("../ViewportContainer/Viewport/Sprites")
+main_path = NodePath("..")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GlobalScalePanel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 134.0
+margin_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GlobalScalePanel/VBoxContainer"]
+margin_right = 129.0
+margin_bottom = 33.0
+
+[node name="Label" type="Label" parent="GlobalScalePanel/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 51.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+text = "Scale:"
+
+[node name="SpinBox" type="SpinBox" parent="GlobalScalePanel/VBoxContainer/HBoxContainer"]
+margin_left = 55.0
+margin_right = 129.0
+margin_bottom = 33.0
+min_value = 1.0
+max_value = 9.0
+value = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="GlobalScalePanel/VBoxContainer"]
+margin_top = 37.0
+margin_right = 129.0
+margin_bottom = 41.0
+
+[node name="All" type="Button" parent="GlobalScalePanel/VBoxContainer"]
+margin_top = 45.0
+margin_right = 129.0
+margin_bottom = 70.0
+text = "Scale All"
+
+[node name="Selected" type="Button" parent="GlobalScalePanel/VBoxContainer"]
+margin_top = 74.0
+margin_right = 129.0
+margin_bottom = 99.0
+text = "Scale Selected"
+
+[node name="ToolBar" type="PanelContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 35.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="HBoxContainer" parent="ToolBar"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 30.0
+
+[node name="FileMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_right = 35.0
+margin_bottom = 25.0
+text = "File"
+items = [ "Import", null, 0, false, false, 0, 0, null, "", false, "Export", null, 0, false, false, 1, 0, null, "", false, "Clear Canvas", null, 0, false, false, 2, 0, null, "", false, "Exit", null, 0, false, false, 3, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="ViewMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_left = 39.0
+margin_right = 84.0
+margin_bottom = 25.0
+focus_mode = 2
+group = SubResource( 3 )
+text = "View"
+items = [ "Reset Zoom", null, 0, false, false, 0, 0, null, "", false, "Zoom to Fit", null, 0, false, false, 1, 0, null, "", false, "Center to Origin", null, 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, 3, 0, null, "", true, "Light Background", null, 2, false, false, 4, 0, null, "", false, "Dark Backtround", null, 2, true, false, 5, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="HelpMenu" type="MenuButton" parent="ToolBar/VBoxContainer"]
+margin_left = 88.0
+margin_right = 133.0
+margin_bottom = 25.0
+focus_mode = 2
+text = "Help"
+items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...", null, 0, false, false, 1, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_bottom = 1.0
-margin_left = -1016.0
+margin_left = 8.0
 margin_top = 40.0
-margin_right = -832.0
+margin_right = 192.0
 margin_bottom = -8.0
 mouse_filter = 2
 __meta__ = {
@@ -403,8 +430,62 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+modulate = Color( 1, 1, 1, 0.52549 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -78.0
+margin_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ZoomIndicator" type="Label" parent="HBoxContainer"]
+margin_top = 8.0
+margin_right = 83.0
+margin_bottom = 31.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/line_spacing = 1
+text = "Zoom: 1.00"
+
+[node name="ResetZoom" type="Button" parent="HBoxContainer"]
+margin_left = 87.0
+margin_right = 113.0
+margin_bottom = 40.0
+icon = ExtResource( 8 )
+flat = true
+
+[node name="DeleteWarning" type="ConfirmationDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -216.0
+margin_top = -128.0
+margin_right = 216.0
+margin_bottom = 52.0
+dialog_text = "Are you sure you want to delete the following sprites?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="DeleteWarning"]
+margin_left = 8.0
+margin_top = 31.0
+margin_right = 424.0
+margin_bottom = 139.0
+
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button2" to="AboutDialog" method="_on_Button2_pressed"]
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
+[connection signal="pressed" from="GlobalScalePanel/VBoxContainer/All" to="GlobalScalePanel" method="_on_All_pressed"]
+[connection signal="pressed" from="GlobalScalePanel/VBoxContainer/Selected" to="GlobalScalePanel" method="_on_Selected_pressed"]
+[connection signal="pressed" from="HBoxContainer/ResetZoom" to="." method="_on_ResetZoom_pressed"]
+[connection signal="confirmed" from="DeleteWarning" to="." method="_on_DeleteWarning_confirmed"]
