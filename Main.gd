@@ -161,18 +161,24 @@ func save_images():
 	if sprites_container.get_child_count() == 0:
 		return
 	
+	var exported_names := "Exported Succesfully:\n"
 	for sprite in sprites_container.get_children():
-		
 		if sprite.texture:
 			var output_name : String = sprite.image_path
 			var extension := output_name.get_extension()
 			var ext_position = output_name.find_last(extension)
+			
 			output_name = output_name.insert(ext_position - 1, "_"+str(sprite.factor)+"X")
 			if OS.get_name() == "HTML5":
 				output_name = output_name.get_file()
 				HtmlFiles.save_image(sprite.texture.get_data(), output_name)
 			else:
+				exported_names += output_name + "\n"
 				sprite.texture.get_data().save_png(output_name)
+				
+	if not OS.get_name() == "HMTL5":
+		$SavedMessagePopUp/PanelContainer/Label.text = exported_names
+		$SavedMessagePopUp.popup_centered()
 
 
 func _on_export_file():
