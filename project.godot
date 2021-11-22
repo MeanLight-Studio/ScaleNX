@@ -12,6 +12,8 @@ config_version=4
 
 config/name="ScaleNX"
 run/main_scene="res://Main.tscn"
+boot_splash/image="res://Images/ScaleNXSplash.png"
+boot_splash/bg_color=Color( 0.145098, 0.145098, 0.145098, 1 )
 config/icon="res://icon.png"
 config/windows_native_icon="res://icon.ico"
 

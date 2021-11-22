@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>$GODOT_PROJECT_NAME</title>
+        <meta charset="UTF-8">
+        <style type="text/css">
+         body {
+             height: 90vh; 
+             background-color: #252525;
+             background-image: url(ScaleNXSplash.png);
+             background-position: center;
+             background-repeat: no-repeat;
+             background-size: contain;
+         }
+         .progress-div {
+             text-align: center;
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+         }
+        </style>
+    </head>
+    <body>
+        <div class="progress-div">
+            <progress id="progress" value="0" max="100"> </progress>
+        </div>
+        <canvas id="canvas"></canvas>
+        <script src="$GODOT_URL"></script>
+        <script>
+         var engine = new Engine($GODOT_CONFIG);
+         function printProgress(current, total) {
+             document.getElementById("progress").value = 100.0 * current / total;
+         }
+         engine.startGame({ onProgress: printProgress });
+        </script>
+    </body>
+</html>
