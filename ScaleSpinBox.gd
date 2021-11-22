@@ -19,4 +19,8 @@ func set_sprite(s : Sprite):
 	sprite = s
 	$HBoxContainer/SpinBox.connect("value_changed", sprite, "set_factor")
 	sprite.connect("selected_changed", self, "set_selected")
+	sprite.connect("scaled", self, "update_scale")
+	
+func update_scale():
+	$HBoxContainer/SpinBox.value = sprite.factor
 	

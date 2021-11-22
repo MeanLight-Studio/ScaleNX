@@ -20,5 +20,4 @@ func _on_All_pressed():
 
 
 func _on_Selected_pressed():
-	for sprite in main.selected_sprites:
-		sprite.set_factor(spin_box.value)
+	main.scale_selected(spin_box.value)

@@ -43,7 +43,6 @@ func _notification(notification:int) -> void:
 func _define_js() -> void:
 	# Define JS script
 	JavaScript.eval("""
-	import { downloadZip } from "https://cdn.jsdelivr.net/npm/client-zip/index.js"
 	var fileData;
 	var fileType;
 	var fileName;

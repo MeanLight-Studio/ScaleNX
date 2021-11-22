@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://MinimalUI/MinimalUI.tres" type="Theme" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Images/ReloadSmall.svg" type="Texture" id=8]
 [ext_resource path="res://Gizmo.gd" type="Script" id=9]
 [ext_resource path="res://Images/gizmo.svg" type="Texture" id=10]
+[ext_resource path="res://Keyboard.ttf" type="DynamicFontData" id=11]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -45,6 +46,10 @@ border_width_bottom = 1
 border_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
 [sub_resource type="ButtonGroup" id=3]
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 11 )
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -117,9 +122,9 @@ window_title = "Open File(s)"
 mode = 1
 access = 2
 filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg", "*.bmp" )
-current_dir = "/home/pablo/Documentos/ScaleNX"
+current_dir = "/home/azagaya/GameDev/ScaleNX"
 current_file = "icon.png"
-current_path = "/home/pablo/Documentos/ScaleNX/icon.png"
+current_path = "/home/azagaya/GameDev/ScaleNX/icon.png"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -156,6 +161,7 @@ margin_bottom = 11.5
 text = "Calculating..."
 
 [node name="AboutDialog" type="PopupDialog" parent="."]
+visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -163,7 +169,7 @@ anchor_bottom = 0.5
 margin_left = -124.0
 margin_top = -192.0
 margin_right = 124.0
-margin_bottom = 192.0
+margin_bottom = 188.0
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -227,13 +233,14 @@ custom_colors/font_color_pressed = Color( 0.933333, 0.878431, 0.74902, 1 )
 text = "Support This Tool!"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AboutDialog"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 24.0
-margin_top = -199.0
-margin_right = -24.0
-margin_bottom = -135.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -32.0
+margin_right = 100.0
+margin_bottom = 32.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -257,11 +264,31 @@ icon = ExtResource( 5 )
 flat = true
 expand_icon = true
 
+[node name="MadeWithGodot" type="LinkButton" parent="AboutDialog"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -94.0
+margin_top = -28.0
+margin_right = 94.0
+margin_bottom = -5.0
+focus_mode = 2
+custom_colors/font_color = Color( 0.870588, 0.796078, 0.623529, 1 )
+custom_colors/font_color_hover = Color( 0.933333, 0.87451, 0.74902, 1 )
+custom_colors/font_color_pressed = Color( 0.933333, 0.87451, 0.74902, 1 )
+text = "Made With Godot Engine"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TextureRect" type="TextureRect" parent="AboutDialog"]
-margin_left = 7.0
-margin_top = 284.0
-margin_right = 71.0
-margin_bottom = 348.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -110.0
+margin_right = 72.0
+margin_bottom = -46.0
 texture = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="AboutDialog/TextureRect"]
@@ -406,23 +433,25 @@ margin_right = 133.0
 margin_bottom = 25.0
 focus_mode = 2
 text = "Help"
-items = [ "Shortcuts", null, 0, false, false, 0, 0, null, "", false, "About...", null, 0, false, false, 1, 0, null, "", false ]
+items = [ "About...", null, 0, false, false, 1, 0, null, "", false ]
 switch_on_hover = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 40.0
-margin_right = 192.0
-margin_bottom = -8.0
+margin_left = -200.0
+margin_top = 168.0
+margin_right = -8.0
+margin_bottom = -16.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 184.0
-margin_bottom = 552.0
+margin_right = 192.0
+margin_bottom = 416.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
@@ -432,12 +461,11 @@ alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 modulate = Color( 1, 1, 1, 0.52549 )
-anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -78.0
+margin_left = 16.0
 margin_top = -40.0
+margin_right = 129.0
 grow_horizontal = 0
 grow_vertical = 0
 __meta__ = {
@@ -480,10 +508,40 @@ margin_top = 31.0
 margin_right = 424.0
 margin_bottom = 139.0
 
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -160.0
+margin_right = 224.0
+margin_bottom = -24.0
+custom_colors/default_color = Color( 0.933333, 0.87451, 0.74902, 0.521569 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_fonts/italics_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[i]1[/i] to [i]9[/i]: Scale selected
+[i]R[/i]: Reset zoom
+[i]C[/i]: Center to Origin
+[i]F[/i]: Zoom to Fit"
+text = "1 to 9: Scale selected
+R: Reset zoom
+C: Center to Origin
+F: Zoom to Fit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="selection_changed" from="." to="." method="_on_Main_selection_changed"]
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="AboutDialog/VBoxContainer/LinkButton" to="AboutDialog" method="_on_LinkButton_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button" to="AboutDialog" method="_on_Button_pressed"]
 [connection signal="pressed" from="AboutDialog/HBoxContainer/Button2" to="AboutDialog" method="_on_Button2_pressed"]
+[connection signal="pressed" from="AboutDialog/MadeWithGodot" to="AboutDialog" method="_on_MadeWithGodot_pressed"]
 [connection signal="pressed" from="AboutDialog/TextureRect/MeanlightLink" to="AboutDialog" method="_on_MeanlightLink_pressed"]
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/All" to="GlobalScalePanel" method="_on_All_pressed"]
 [connection signal="pressed" from="GlobalScalePanel/VBoxContainer/Selected" to="GlobalScalePanel" method="_on_Selected_pressed"]

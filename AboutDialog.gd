@@ -17,3 +17,7 @@ func _on_LinkButton_pressed():
 
 func _on_MeanlightLink_pressed():
 	OS.shell_open("https://meanlight-studio.com")
+
+
+func _on_MadeWithGodot_pressed():
+	OS.shell_open("https://godotengine.org/")

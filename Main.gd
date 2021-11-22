@@ -48,7 +48,7 @@ func _unhandled_input(event):
 				else:
 					if not unselect_timer.is_stopped() and multi:
 						set_unselected_sprite(clicked_sprite)
-			
+						
 		moving_camera = false
 		if event.button_index == BUTTON_MIDDLE and event.is_pressed():
 			moving_camera = true
@@ -56,6 +56,34 @@ func _unhandled_input(event):
 			self.zoom = clamp(zoom * 0.9, 0.01, 50)
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			self.zoom = clamp(zoom * 1.1, 0.01, 50)
+			
+	elif event is InputEventKey:
+		match event.scancode:
+			KEY_1:
+				scale_selected(1)
+			KEY_2:
+				scale_selected(2)
+			KEY_3:
+				scale_selected(3)
+			KEY_4:
+				scale_selected(4)
+			KEY_5:
+				scale_selected(5)
+			KEY_6:
+				scale_selected(6)
+			KEY_7:
+				scale_selected(7)
+			KEY_8:
+				scale_selected(8)
+			KEY_9:
+				scale_selected(9)
+			KEY_F:
+				zoom_to_fit()
+			KEY_R:
+				reset_zoom()
+			KEY_C:
+				center_to_origin()
+		
 			
 	if event.is_action_pressed("delete"):
 		delete_sprites(selected_sprites.duplicate())
@@ -133,24 +161,25 @@ func save_images():
 	if sprites_container.get_child_count() == 0:
 		return
 	
-	for sprite in selected_sprites:
+	for sprite in sprites_container.get_children():
 		
 		if sprite.texture:
 			var output_name : String = sprite.image_path
 			var extension := output_name.get_extension()
 			var ext_position = output_name.find_last(extension)
 			output_name = output_name.insert(ext_position - 1, "_"+str(sprite.factor)+"X")
-			sprite.texture.get_data().save_png(output_name)
+			if OS.get_name() == "HTML5":
+				output_name = output_name.get_file()
+				HtmlFiles.save_image(sprite.texture.get_data(), output_name)
+			else:
+				sprite.texture.get_data().save_png(output_name)
 
 
 func _on_export_file():
 	if sprites_container.get_child_count() == 0:
 		return
 		
-	if OS.get_name() == "HTML5":
-		HtmlFiles.save_image(selected_sprites[0].texture.get_data())
-	else:
-		save_images()
+	save_images()
 
 func _on_file_menu_id_pressed(id):
 	match id:
@@ -166,25 +195,11 @@ func _on_file_menu_id_pressed(id):
 func _on_view_menu_id_pressed(id):
 	match id:
 		0:
-			self.zoom = 1
+			reset_zoom()
 		1:
-			if sprites_container.get_child_count() == 0:
-				return
-			var rect := Rect2(0,0,0,0)
-			for sprite in sprites_container.get_children():
-				var s : Vector2 = sprite.texture.get_size()
-				var r := Rect2((sprite.global_position), s)
-				if rect.size == Vector2.ZERO:
-					rect = r
-				else:
-					rect = rect.merge(r)
-			if rect.size != Vector2.ZERO:
-				camera.position = rect.position + rect.size/2
-				var ratio = rect.size / (get_viewport().size-Vector2(0.0,100.0))
-				self.zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
-				
+			zoom_to_fit()
 		2:
-			camera.position = Vector2.ZERO
+			center_to_origin()
 		4:
 			view_menu.toggle_item_checked(view_menu.get_item_index(id))
 			view_menu.toggle_item_checked(view_menu.get_item_index(5))
@@ -277,3 +292,36 @@ func delete_sprites(sprites : Array):
 func _on_DeleteWarning_confirmed():
 	for sprite in sprites_to_delete:
 		delete_sprite(sprite)
+
+func scale_selected(scale : int):
+	for sprite in selected_sprites:
+		sprite.set_factor(scale)
+
+func zoom_to_fit():
+	if sprites_container.get_child_count() == 0:
+		return
+	var rect := Rect2(0,0,0,0)
+	for sprite in sprites_container.get_children():
+		var s : Vector2 = sprite.texture.get_size()
+		var r := Rect2((sprite.global_position), s)
+		if rect.size == Vector2.ZERO:
+			rect = r
+		else:
+			rect = rect.merge(r)
+	if rect.size != Vector2.ZERO:
+		camera.position = rect.position + rect.size/2
+		var ratio = rect.size / (get_viewport().size-Vector2(0.0,100.0))
+		self.zoom = clamp(max(ratio.x, ratio.y), 0.01, 50)
+
+func reset_zoom():
+	self.zoom = 1
+	
+func center_to_origin():
+	camera.position = Vector2.ZERO
+
+
+func _on_Main_selection_changed(selection : Array):
+	var target_color := Color.transparent if selection.empty() else Color.white
+	$Tween.stop_all()
+	$Tween.interpolate_property($RichTextLabel, "modulate", $RichTextLabel.modulate, target_color, 0.3, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+	$Tween.start()
